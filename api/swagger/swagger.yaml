@@ -1,0 +1,197 @@
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: LibrarySampleApi
+host: localhost:10010
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+  - text/plain
+paths:
+  /genres:
+    x-swagger-router-controller: books
+    get:
+      description: it gets an array of available genres of the books in the library
+      operationId: getGenres
+      parameters:
+        - name: token
+          in: query
+          description: should be a valid token for a user previously authenticathed
+          required: true
+          type: string
+      responses:
+        "200":
+          $ref: '#/responses/200'
+        "401":
+          $ref: '#/responses/401'
+  /states:
+    x-swagger-router-controller: books
+    get:
+      description: it gets an array of available states of the books in the library
+      operationId: getStates
+      parameters:
+        - name: token
+          in: query
+          description: should be a valid token for a user previously authenticathed
+          required: true
+          type: string
+      responses:
+         "200":
+            $ref: '#/responses/200'
+         "401":
+            $ref: '#/responses/401'
+  /books:
+      x-swagger-router-controller: books
+      get:
+        description: it gets an array of books belongs to the user authenticated
+        operationId: getBooks
+        parameters:
+          - name: token
+            in: query
+            description: should be a valid token for a user previously authenticathed
+            required: true
+            type: string
+        responses:
+         "200":
+            $ref: '#/responses/200'
+         "401":
+            $ref: '#/responses/401'
+  /book:
+      x-swagger-router-controller: books
+      get:
+        description: it gets the info of a book belongs to the user authenticated
+        operationId: getBook
+        parameters:
+          - name: token
+            in: query
+            description: should be a valid token for a user previously authenticathed
+            required: true
+            type: string
+          - name: bookId
+            in: query
+            description: Id of the book
+            required: true
+            type: number
+        responses:
+         "200":
+            $ref: '#/responses/200'
+         "401":
+            $ref: '#/responses/401'
+      post:
+        description: it adds a new book in the database
+        operationId: addBook
+        parameters:
+          - name: token
+            in: query
+            description: should be a valid token for a user previously authenticathed
+            required: true
+            type: string
+          - name: book
+            in: body
+            description: book to add
+            required: true
+            schema:
+              type: object
+              properties:
+                bookCover:
+                  type: string
+                title:
+                  type: string
+                author:
+                  type: string
+                genre:
+                  type: integer
+                state:
+                  type: integer
+        responses:
+         "200":
+            $ref: '#/responses/200'
+         "401":
+            $ref: '#/responses/401'
+      put:
+        description: it edits this book in the database
+        operationId: editBook
+        parameters:
+          - name: token
+            in: query
+            description: should be a valid token for a user previously authenticathed
+            required: true
+            type: string
+          - name: bookId
+            in: query
+            description: Id of the book to edit
+            required: true
+            type: number
+          - name: book
+            in: body
+            description: book to add
+            required: true
+            schema:
+              type: object
+              properties:
+                bookCover:
+                  type: string
+                title:
+                  type: string
+                author:
+                  type: string
+                genre:
+                  type: integer
+                state:
+                  type: integer
+        responses:
+         "200":
+            $ref: '#/responses/200'
+         "401":
+            $ref: '#/responses/401'
+      delete:
+        description: it deletes a book in the database
+        operationId: deleteBook
+        parameters:
+          - name: token
+            in: query
+            description: should be a valid token for a user previously authenticathed
+            required: true
+            type: string
+          - name: bookId
+            in: query
+            description: Id of the book to edit
+            required: true
+            type: number
+        responses:
+         "200":
+            $ref: '#/responses/200'
+         "401":
+            $ref: '#/responses/401'
+  /swagger:
+    x-swagger-pipe: swagger_raw
+responses:
+  200:
+    description: Success
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+        response:
+          type: object
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+  400:
+    description: Bad Request
+  401:
+    description: Unauthorized
+  500:
+    description: Internal Server Error
